@@ -1,9 +1,18 @@
-document.getElementById("toggleCadastra").addEventListener("click", function () {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("cadastra").style.display = "block";
+document.addEventListener('DOMContentLoaded', function () {
+  const loginForm = document.getElementById('login');
+  const cadastraForm = document.getElementById('cadastra');
+  const toggleLoginLink = document.getElementById('toggleLogin');
+  const toggleCadastraLink = document.getElementById('toggleCadastra');
+
+  toggleLoginLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    loginForm.style.display = 'block';
+    cadastraForm.style.display = 'none';
   });
-  
-  document.getElementById("toggleLogin").addEventListener("click", function () {
-    document.getElementById("cadastra").style.display = "none";
-    document.getElementById("login").style.display = "block";
+
+  toggleCadastraLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    loginForm.style.display = 'none';
+    cadastraForm.style.display = 'block';
   });
+});

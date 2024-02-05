@@ -1,20 +1,20 @@
 <?php
-    #ABRE UMA CONEXÃO COM O BANCO DE DADOS
+    // ABRE UMA CONEXÃO COM O BANCO DE DADOS
     include("cabecalho.php");
- 
-    #PASSANDO UMA INSTRUÇÃO AO BANCO DE DADOS
+
+    // PASSANDO UMA INSTRUÇÃO AO BANCO DE DADOS
     $sql = "SELECT * FROM usuarios WHERE usu_status = 's'";
     $retorno = mysqli_query($link, $sql);
-    $contador = 0; #INICIALIZA UM CONTADOR PARA ACOMPANHAR AS LINHAS
- 
-    #FORÇA SEMPRE TRAZER 'S' NA VARIÁVEL PARA UTILIZARMOS NOS RADIO BUTNTON
+    $contador = 0; // INICIALIZA UM CONTADOR PARA ACOMPANHAR AS LINHAS
+
+    // FORÇA SEMPRE TRAZER 'S' NA VARIÁVEL PARA UTILIZARMOS NOS RADIO BUTTON
     $ativo = "s";
- 
-    #COLETA O BOTÃO MÉTODO POST VINDO DO HTML
+
+    // COLETA O BOTÃO MÉTODO POST VINDO DO HTML
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ativo = $_POST['ativo'];
- 
-        #VERIFICA SE O USUARIO ESTÁ ATIVO PARA LISTA, SE 'S' LISTA SENÃO, NÃO LISTA
+
+        // VERIFICA SE O USUARIO ESTÁ ATIVO PARA LISTA, SE 'S' LISTA SENÃO, NÃO LISTA
         if ($ativo == 's') {
             $sql = "SELECT * FROM usuarios WHERE usu_status = 's'";
             $retorno = mysqli_query($link, $sql);
@@ -25,11 +25,9 @@
             $sql = "SELECT * FROM usuarios";
             $retorno = mysqli_query($link, $sql);
         }
- 
     }
 ?>
- 
- 
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -44,28 +42,24 @@
                 <section class="table-header">
                     <div class="form-container">
                         <form action="listausuario.php" method="post">
-                            <input type="radio" name="ativo" class="radio" value="s" id="radioativo"
-                            required onclick="submit()" <?= $ativo == 's' ? "checked" : "" ?>>
+                            <input type="radio" name="ativo" class="radio" value="s" id="radioativo" required onclick="submit()" <?= $ativo == 's' ? "checked" : "" ?>>
                             <label class="radio-label" for="radioativo">Ativo</label>
-                            <input type="radio" name="ativo" class="radio" value="n" id="radioinativo"
-                            required onclick="submit()" <?= $ativo == 'n' ? "checked" : "" ?>>
+                            <input type="radio" name="ativo" class="radio" value="n" id="radioinativo" required onclick="submit()" <?= $ativo == 'n' ? "checked" : "" ?>>
                             <label class="radio-label" for="radioinativo">Inativo</label>
-                            <input type="radio" name="ativo" class="radio" value="todos" id="radiotodos"
-                            required onclick="submit()" <?= $ativo == 'todos' ? "checked" : "" ?>>
+                            <input type="radio" name="ativo" class="radio" value="todos" id="radiotodos" required onclick="submit()" <?= $ativo == 'todos' ? "checked" : "" ?>>
                             <label class="radio-label" for="radiotodos">Todos</label>
                         </form>
                     </div>
-                   
                 </section>
                 <section class="table-body">
-                    <table>
+                    <table border="2">
                         <thead>
                             <tr>
-                                <th class="id-column">id</th>
-                                <th class="usu-column">Usuário</th>
-                                <th class="email-column">E-mail</th>
-                                <th class="status-column">Status</th>
-                                <th class="alter-column">Alterar dados</th>
+                                <th>id</th>
+                                <th>Usuário</th>
+                                <th>E-mail</th>
+                                <th>Status</th>
+                                <th>Alterar</th>
                             </tr>
                         </thead>
                         <?php
@@ -83,7 +77,13 @@
                                         <?= $check = ($tbl[3] == "s") ? "Ativo" : "Inativo" ?>
                                     </p>
                                 </td>
-                                <td><a href="alterausuario.php?id=<?=$tbl[0] ?>"><button class="btn-alterar"><p class="text">Alterar</p></button></a></td>
+                                <td>
+                                    <a href="alterausuario.php?id=<?=$tbl[0] ?>&login=<?= $tbl[1] ?>&email=<?= $tbl[5] ?>">
+                                        <button class="btn-alterar">
+                                            <a href="alterausuario.php?id=ID_DO_USUARIO">Alterar</a>
+                                        </button>
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                         <?php

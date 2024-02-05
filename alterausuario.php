@@ -1,24 +1,35 @@
 <?php
-include("cabecalho.php");
+include("cabecalho.php"); 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_id = $_POST['user_id'];
-    $new_login = $_POST['new_login'];
-    $new_email = $_POST['new_email'];
-    $new_password = $_POST['new_password'];
-    $new_status = $_POST['new_status']; 
-
-
-    echo "<script>window.alert('Usuário alterado com sucesso');</script>";
-    echo "<script>window.location.href='listausuario.php'</script>";
+    $id = $_POST['id'];
+    $login = $_POST['login'];
+    $senha = $_POST['senha'];
+    $email = $_POST['email'];
+    $status = $_POST['status'];
+    
+    $sql = "UPDATE usuarios SET usu_login = '$login', usu_senha = '$senha', usu_email = '$email', usu_status = '$status'";
+ 
+    $sql .= " WHERE usu_id = $id";
+ 
+    mysqli_query($link, $sql);
+ 
+    echo "<script>window.alert('usuario alterado com sucesso!');</script>";
+    echo "<script>window.location.href='listausuario.php';</script>";
 }
-
-
-$user_id = $_GET['id']; 
-$current_login = "usuario_atual"; 
-$current_email = "email_atual"; 
-$current_status = "s"; 
+ 
+$id = $_GET['id'];
+$sql = "SELECT * FROM usuarios WHERE usu_id = '$id'";
+$retorno = mysqli_query($link, $sql);
+ 
+while ($tbl = mysqli_fetch_array($retorno)) {
+    $login = $tbl[1];
+    $senha = $tbl[2];
+    $email = $tbl[5];
+    $status = $tbl[3];
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,17 +42,16 @@ $current_status = "s";
 <body>
     <div id="altera-usuario">
         <form action="alterausuario.php" method="post">
-            <input type="hidden" name="user_id" value="<?= $user_id ?>">
-            <label for="new_login">Novo Login:</label>
-            <input type="text" name="new_login" id="new_login" value="<?= $current_login ?>" required>
-            <label for="new_email">Novo E-mail:</label>
-            <input type="text" name="new_email" id="new_email" value="<?= $current_email ?>" required>
-            <label for="new_password">Nova Senha:</label>
-            <input type="password" name="new_password" id="new_password" placeholder="Nova senha" required>
+            <label>Login</label>
+            <input type="text" name="login" id="login" value="<?=$login?>" required>
+            <label>E-mail</label>
+            <input type="text" name="email" id="email" value="<?=$email?>" required>
+            <label>Senha</label>
+            <input type="password" name="senha" id="senha" value="<?=$senha?>" required>
             <p></p>
-            <input type="radio" name="new_status" value="s"<?= $current_status == "s" ? "checked" : "" ?>>ATIVO
+            <input type="radio" name="status" value="s" <?= $status == "s" ? "checked" : "" ?>> ATIVO
             <br>
-            <input type="radio" name="new_status" value="n" <?= $current_status == "n" ? "checked" : "" ?>>INATIVO
+            <input type="radio" name="status" value="n" <?= $status == "n" ? "checked" : "" ?>> INATIVO
 
             <input type="submit" value="Atualizar">
         </form>

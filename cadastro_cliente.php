@@ -1,46 +1,50 @@
 <?php
 include('cabecalho.php');
- 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Captura e valida os dados do formulário
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $telefone = $_POST['telefone'];
     $cpf = $_POST['cpf'];
     $curso = $_POST['curso'];
     $sala = $_POST['sala'];
-    
- 
-    //*INSERIR INSTRUÇÕES NO BANCO  
-    $sql = "SELECT COUNT(cli_id) FROM clientes WHERE cli_email = '$email' OR cli_nome = '$nome'";
-    $resultado = mysqli_query($link, $sql);
-    $resultado = mysqli_fetch_array($resultado) [0];
-    //*GRAVA LOG  
-    $sql = '"'.$sql.'"';
-    $sqllog = "INSERT INTO tab_log (tab_query, tab_data) VALUES ($sql, NOW())";
-    mysqli_query($link, $sqllog);
-    //*VERIFICA SE EXISTE
-    if($resultado >= 1){
-        echo"<script>window.alert('CLIENTE JÁ CADASTRADO');</script>";
-        echo"<script>window.location.href='cadastracliente.php';</script>";
-    }
-    else{
-        $sql = "INSERT INTO clientes(cli_nome, cli_email, cli_telefone, cli_cpf, cli_curso, cli_sala)
-                VALUES('$nome','$email','$telefone','$cpf','$curso','$sala')";
-        
- 
-         //*GRAVA LOG
-        $sql ='"'.$sql.'"';
-        $sqllog ="INSERT INTO tab_log (tab_query, tab_data) VALUES ($sql, NOW())";
-        mysqli_query($link, $sqllog);
- 
-        echo"<script>window.alert('CLIENTE CADASTRADO');</script>";
-        echo"<script>window.location.href='listacliente.php';</script>";
+
+    // Validação simples (pode ser aprimorada conforme necessário)
+    if (empty($nome) || empty($email) || empty($telefone) || empty($cpf)) {
+        echo "<div class='error'>Preencha todos os campos obrigatórios.</div>";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "<div class='error'>E-mail inválido.</div>";
+    } else {
+        // Verifica se o cliente já está cadastrado
+        $check_query = "SELECT COUNT(cli_id) AS total FROM clientes WHERE cli_email = ? OR cli_nome = ?";
+        $stmt = mysqli_prepare($link, $check_query);
+        mysqli_stmt_bind_param($stmt, "ss", $email, $nome);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $total);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
+
+        if ($total >= 1) {
+            echo "<div class='error'>Cliente já cadastrado.</div>";
+        } else {
+            // Insere o novo cliente no banco de dados
+            $insert_query = "INSERT INTO clientes(cli_nome, cli_email, cli_telefone, cpf, cli_curso, cli_sala) VALUES(?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($link, $insert_query);
+            mysqli_stmt_bind_param($stmt, "ssssss", $nome, $email, $telefone, $cpf, $curso, $sala);
+
+            if (mysqli_stmt_execute($stmt)) {
+                echo "<div class='success'>Cliente cadastrado com sucesso.</div>";
+                header("Location: listacliente.php");
+                exit();
+            } else {
+                echo "<div class='error'>Erro ao cadastrar o cliente: " . mysqli_error($link) . "</div>";
+            }
+            mysqli_stmt_close($stmt);
+        }
     }
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,20 +55,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <title>Cadastro cliente</title>
 </head>
 <body>
-    <form action="cadastro_cliente.php" method="post">
+    <form action="cadastro_cliente.php" method="post"> 
         <label for="nome">Nome</label>
-        <input type="text" id="cli_nome" name="nome" required>
+        <input type="text" id="nome" name="nome" required>
         <br>
-        <label for="cli_email">E-mail</label>
+        <label for="email">E-mail</label>
         <input type="text" id="email" name="email" required>
         <br>
-        <label for="cli_telefone">Telefone</label>
+        <label for="telefone">Telefone</label>
         <input type="text" id="telefone" name="telefone" required>
         <br>
-        <label for="cli_cpf">CPF</label>
+        <label for="cpf">CPF</label>
         <input type="text" id="cpf" name="cpf" required>
         <br>
-        <label for="cli_curso">Curso</label>
+        <label for="curso">Curso</label>
         <input type="text" id="curso" name="curso">
         <br>
         <label for="sala">Sala</label>
@@ -74,3 +78,4 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     </form>
 </body>
 </html>
+

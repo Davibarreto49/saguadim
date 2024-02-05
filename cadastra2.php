@@ -8,32 +8,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $key = rand(100000, 999999);
 
-    $sql_check_existing = "SELECT COUNT(usu_id) FROM usuarios
-        WHERE usu_email = '$email' OR usu_login = '$login'";
+    $sql_check_existing = "SELECT COUNT(usu_id) FROM usuarios WHERE usu_email = '$email' OR usu_login = '$login'";
     $result_check_existing = mysqli_query($link, $sql_check_existing);
     $count_existing = mysqli_fetch_array($result_check_existing)[0];
 
-    $sql_check_existing_log = mysqli_real_escape_string($link, $sql_check_existing);
-    $sqllog_check_existing = "INSERT INTO tab_log (tab_query, tab_data)
-    VALUES ('$sql_check_existing_log', NOW())";
-    mysqli_query($link, $sqllog_check_existing);
-
     if ($count_existing >= 1) {
+        // Verifica se o e-mail ou o login já existem
         echo "<script>window.alert('EMAIL OU LOGIN JÁ EXISTENTE');</script>";
         echo "<script>window.location.href='login.html';</script>";
     } else {
-        $hashed_password = password_hash($senha, PASSWORD_DEFAULT);
+       
 
-        $sql_insert_user = "INSERT INTO usuarios 
-            (usu_login, usu_senha, usu_status, usu_key, usu_email) 
-            VALUES ('$login', '$hashed_password', 's', '$key', '$email')";
+        $sql_insert_user = "INSERT INTO usuarios (usu_login, usu_senha, usu_status, usu_key, usu_email) 
+            VALUES ('$login', '$senha', 's', '$key', '$email')";
         mysqli_query($link, $sql_insert_user);
 
-        $sql_insert_user_log = mysqli_real_escape_string($link, $sql_insert_user);
-        $sqllog_insert_user = "INSERT INTO tab_log (tab_query, tab_data)
-        VALUES ('$sql_insert_user_log', NOW())";
-        mysqli_query($link, $sqllog_insert_user);
-
+        // Após o cadastro, exibe uma mensagem e redireciona para a página de login
         echo "<script>window.alert('USUÁRIO CADASTRADO COM SUCESSO');</script>";
         echo "<script>window.location.href='login.html';</script>";
     }

@@ -1,7 +1,5 @@
 <?php
-// session_start();
-// $nomeusuario = $_SESSION['nomeusuario'];
- 
+
 include('cabecalho.php');
  
 $sql = "SELECT pro_nome, pro_quantidade, pro_custo, pro_preco, pro_id, pro_status FROM produtos WHERE pro_status = 's'";

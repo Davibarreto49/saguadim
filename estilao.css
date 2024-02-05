@@ -1,13 +1,16 @@
-html{
-    background-color: hwb(295 0% 87%); /* Define a cor de fundo do menu */
-  }
-  
-  .menu {
-    list-style-type: none; /* Remove os marcadores de lista */
+body{
+  font-family: 'Times New Roman', Times, serif;
+  background-color: #555555;
+  margin: 0;
+  padding: 0;
+}
+.menu {
+    list-style-type: none; 
     margin: 0;
     padding: 0;
-    background-color: hwb(0 95% 5%); /* Define a cor de fundo do menu */
-    border-radius: 10px;
+    background-color: hwb(0 6% 93%);
+    overflow: hidden; 
+    border-bottom: 2px solid #c20a0a;
   }
   
   .menu li {
@@ -18,11 +21,11 @@ html{
     display: block; /* Define os links como elementos de bloco para ocuparem todo o espaço horizontal disponível */
     padding: 8px 16px; /* Adiciona espaçamento interno aos links */
     text-decoration: none; /* Remove a decoração de texto padrão (sublinhado) */
-    color: #333; /* Define a cor do texto dos links */
+    color: #dbcdcd; /* Define a cor do texto dos links */
   }
   
   .menu li a:hover {
-    background-color: #550469; /* Define a cor de fundo ao passar o mouse sobre os links */
+    background-color: #ca0b0b; /* Define a cor de fundo ao passar o mouse sobre os links */
     color: #fff; /* Define a cor do texto ao passar o mouse sobre os links */
     border-radius: 10px;
   }
@@ -41,16 +44,22 @@ html{
   .profile{
   float: right;
   margin: 7px 5px 0 0;
+  color: #eee6f0;
   }
   
   /* PADRONIZAÇÃO DA TAG FORM */
   form{
-    background-color: rgb(205, 191, 211);
+    background-color: rgb(15, 14, 14);
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px rgba(236, 228, 228, 0.1);
     margin: 20px auto;
     padding: 20px;
     width: 300px;
+    color: #e0dceb;
+  }
+
+  label{
+    color: #edecf0;
   }
   
   input{
@@ -98,7 +107,7 @@ html{
     color: #e0dceb;
   }
   p{
-  
+ 
     color: #e0dceb;
   }
   
@@ -136,3 +145,4 @@ html{
       border-radius: 10px;
       font-size: smaller;
     }
+    
