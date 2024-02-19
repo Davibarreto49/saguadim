@@ -33,7 +33,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE-edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="estilao.css">
+        <link rel="stylesheet" href="estilao2.css">
         <title>LISTA USUARIOS</title>
     </head>
     <body>
@@ -56,10 +56,10 @@
                         <thead>
                             <tr>
                                 <th>id</th>
-                                <th>Usuário</th>
-                                <th>E-mail</th>
-                                <th>Status</th>
-                                <th>Alterar</th>
+                                <th>USUARIO</th>
+                                <th>E-MAIL</th>
+                                <th>STATUS</th>
+                                <th>ALTERAR</th>
                             </tr>
                         </thead>
                         <?php

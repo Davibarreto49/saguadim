@@ -14,11 +14,10 @@ $nomeusuario = $_SESSION['nomeusuario'];
         <li><a href="cadastraproduto.php">CADASTRAR PRODUTO</a></li>
         <li><a href="listaproduto.php">LISTAR PRODUTO</a></li>
         <li><a href="fornecedor.php">FORNECEDOR</a></li>
-        <li><a href="alteracliente.php">ALTERA CLIENTE</a></li>
-        <li><a href="cadastro_cliente.php">CADASTRO CLIENTE</a></li>
+        
         <li><a href="listacliente.php">LISTA CLIENTE</a></li>
         <li class="menuloja"><a href="logout.php">SAIR</a></li>
-        <link rel="stylesheet" href="estilao.css">
+        <link rel="stylesheet" href="estilao1.css">
         <?php
         if($nomeusuario != null){
         ?>

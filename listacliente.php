@@ -1,18 +1,25 @@
 <?php
+    
     include("cabecalho.php");
  
-    $sql = "SELECT * FROM clientes WHERE cli_status = 'ativo'";
+   
+    $sql = "SELECT * FROM clientes WHERE cli_status = 's'";
     $retorno = mysqli_query($link, $sql);
-    $ativo = "ativo";
+    $contador = 0; 
  
+   
+    $ativo = "s";
+ 
+    
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ativo = $_POST['ativo'];
  
-        if ($ativo == 'ativo') {
-            $sql = "SELECT * FROM clientes WHERE cli_status = 'ativo'";
+        
+        if ($ativo == 's') {
+            $sql = "SELECT * FROM clientes WHERE cli_status = 's'";
             $retorno = mysqli_query($link, $sql);
-        } elseif ($ativo == 'inativo') {
-            $sql = "SELECT * FROM clientes WHERE cli_status = 'inativo'";
+        } elseif ($ativo == 'n') {
+            $sql = "SELECT * FROM clientes WHERE cli_status = 'n'";
             $retorno = mysqli_query($link, $sql);
         } else {
             $sql = "SELECT * FROM clientes";
@@ -20,53 +27,50 @@
         }
     }
 ?>
- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="estilao.css">
+    <link rel="stylesheet" href="estilao2.css">
     <title>LISTA CLIENTES</title>
 </head>
 <body>
-    <main class="listacliente-container">
+    <main>
         <div class="table">
             <section class="table-header">
-                <div class="form-container">
-                    <form action="listacliente.php" method="post">
-                        <input type="radio" name="ativo" class="radio" value="ativo" id="radioativo"
-                        required onclick="submit()" <?= $ativo == 'ativo' ? "checked" : "" ?>>
-                        <label class="radio-label" for="radioativo">Ativos</label>
-                        <input type="radio" name="ativo" class="radio" value="inativo" id="radioinativo"
-                        required onclick="submit()" <?= $ativo == 'inativo' ? "checked" : "" ?>>
-                        <label class="radio-label" for="radioinativo">Inativos</label>
-                        <input type="radio" name="ativo" class="radio" value="todos" id="radiotodos"
-                        required onclick="submit()" <?= $ativo == 'todos' ? "checked" : "" ?>>
-                        <label class="radio-label" for="radiotodos">Todos</label>
-                    </form>
-                </div>
-            </section>
+            <div class="form-container">
+    <form action="listacliente.php" method="post">
+        <input type="radio" name="status" class="radio" value="s" id="radioativo"
+        required <?= $ativo == 's' ? "checked" : "" ?>>
+        <label class="radio-label" for="radioativo">Ativos</label>
+        <input type="radio" name="status" class="radio" value="n" id="radioinativo"
+        required <?= $ativo == 'n' ? "checked" : "" ?>>
+        <label class="radio-label" for="radioinativo">Inativos</label>
+        <input type="radio" name="status" class="radio" value="todos" id="radiotodos"
+        required <?= $ativo == 'todos' ? "checked" : "" ?>>
+        <label class="radio-label" for="radiotodos">Todos</label>
+        
+    </form>
+</div>
+    </section>
             <section class="table-body">
-                <table>
-                    <thead>
+                <table border="2">
                         <tr>
-                            <th class="id-column">ID</th>
-                            <th class="nome-column">Nome</th>
-                            <th class="email-column">E-mail</th>
-                            <th class="status-column">Status</th>
-                            <th class="alter-column">Alterar Dados</th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Status</th>
+                            <th>Alterar Dados</th>
                         </tr>
-                    </thead>
                     <?php
-                        while ($tbl = mysqli_fetch_array($retorno)) {
+                    while ($tbl = mysqli_fetch_array($retorno)) {
                     ?>
-                    <tbody>
                         <tr>
                             <td><?= $tbl[0] ?></td>
                             <td><?= $tbl[1] ?></td>
-                            <td><?= $tbl[4] ?></td>
+                            <td><?= $tbl[2] ?></td> 
                             <td>
                                 <p class="status <?= $check = ($tbl[3] == "ativo") ? "ativo" : "inativo" ?>">
                                     <?= $check = ($tbl[3] == "ativo") ? "Ativo" : "Inativo" ?>
@@ -74,8 +78,8 @@
                             </td>
                             <td><a href="alteracliente.php?id=<?= $tbl[0] ?>"><button class="btn-alterar"><p class="text">Alterar</p></button></a></td>
                         </tr>
-                    </tbody>
                     <?php
+                            
                         }
                     ?>
                 </table>

@@ -1,81 +1,60 @@
 <?php
-include('cabecalho.php');
+include("cabecalho.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Captura e valida os dados do formulário
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $telefone = $_POST['telefone'];
-    $cpf = $_POST['cpf'];
-    $curso = $_POST['curso'];
-    $sala = $_POST['sala'];
+    $nome = mysqli_real_escape_string($link, $_POST['nome']);
+    $email = mysqli_real_escape_string($link, $_POST['email']);
+    $telefone = mysqli_real_escape_string($link, $_POST['telefone']);
+    $cpf = mysqli_real_escape_string($link, $_POST['cpf']);
+    $curso = mysqli_real_escape_string($link, $_POST['curso']);
+    $sala = mysqli_real_escape_string($link, $_POST['sala']);
 
-    // Validação simples (pode ser aprimorada conforme necessário)
-    if (empty($nome) || empty($email) || empty($telefone) || empty($cpf)) {
-        echo "<div class='error'>Preencha todos os campos obrigatórios.</div>";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "<div class='error'>E-mail inválido.</div>";
+    $sql_check_existing = "SELECT COUNT(cli_id) FROM clientes WHERE cli_email = '$email'";
+    $result_check_existing = mysqli_query($link, $sql_check_existing);
+    $count_existing = mysqli_fetch_array($result_check_existing)[0];
+
+    if ($count_existing >= 1) {
+        // Verifica se o e-mail já está cadastrado
+        echo "<script>window.alert('EMAIL JÁ EXISTENTE');</script>";
+        echo "<script>window.location.href='logincliente.html';</script>";
     } else {
-        // Verifica se o cliente já está cadastrado
-        $check_query = "SELECT COUNT(cli_id) AS total FROM clientes WHERE cli_email = ? OR cli_nome = ?";
-        $stmt = mysqli_prepare($link, $check_query);
-        mysqli_stmt_bind_param($stmt, "ss", $email, $nome);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $total);
-        mysqli_stmt_fetch($stmt);
-        mysqli_stmt_close($stmt);
+        $sql_insert_client = "INSERT INTO clientes (cli_nome, cli_email, cli_telefone, cli_cpf, cli_curso, cli_sala) 
+            VALUES ('$nome', '$email', '$telefone', '$cpf', '$curso', '$sala')";
+            echo $sql_insert_client;
+        mysqli_query($link, $sql_insert_client);
 
-        if ($total >= 1) {
-            echo "<div class='error'>Cliente já cadastrado.</div>";
-        } else {
-            // Insere o novo cliente no banco de dados
-            $insert_query = "INSERT INTO clientes(cli_nome, cli_email, cli_telefone, cpf, cli_curso, cli_sala) VALUES(?, ?, ?, ?, ?, ?)";
-            $stmt = mysqli_prepare($link, $insert_query);
-            mysqli_stmt_bind_param($stmt, "ssssss", $nome, $email, $telefone, $cpf, $curso, $sala);
-
-            if (mysqli_stmt_execute($stmt)) {
-                echo "<div class='success'>Cliente cadastrado com sucesso.</div>";
-                header("Location: listacliente.php");
-                exit();
-            } else {
-                echo "<div class='error'>Erro ao cadastrar o cliente: " . mysqli_error($link) . "</div>";
-            }
-            mysqli_stmt_close($stmt);
-        }
+        // Após o cadastro, exibe uma mensagem e redireciona para a página de confirmação
+        echo "<script>window.alert('CLIENTE CADASTRADO COM SUCESSO');</script>";
+        echo "<script>window.location.href='logincliente.html';</script>";
+       
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="estilao.css">
-    <title>Cadastro cliente</title>
+    <link rel="stylesheet" href="estilao2.css">
+    <title>CADASTRO DE CLIENTE</title>
 </head>
 <body>
-    <form action="cadastro_cliente.php" method="post"> 
-        <label for="nome">Nome</label>
-        <input type="text" id="nome" name="nome" required>
-        <br>
-        <label for="email">E-mail</label>
-        <input type="text" id="email" name="email" required>
-        <br>
-        <label for="telefone">Telefone</label>
-        <input type="text" id="telefone" name="telefone" required>
-        <br>
-        <label for="cpf">CPF</label>
-        <input type="text" id="cpf" name="cpf" required>
-        <br>
-        <label for="curso">Curso</label>
-        <input type="text" id="curso" name="curso">
-        <br>
-        <label for="sala">Sala</label>
-        <input type="text" id="sala" name="sala">
-        <br>
-        <input type="submit" value="Cadastrar">
-    </form>
+    <div id="cadastra">
+        <form action="cadastro_cliente.php" method="post">
+            <label>NOME</label>
+            <input type="text" name="nome" id="nome" required/>
+            <label>EMAIL</label>
+            <input type="text" name="email" id="email" placeholder="email@exemplo.com" required/>
+            <label>TELEFONE</label>
+            <input type="text" name="telefone" id="telefone" required/>
+            <label>CPF</label>
+            <input type="text" name="cpf" id="cpf" required/>
+            <label>CURSO</label>
+            <input type="text" name="curso" id="curso" required/>
+            <label>SALA</label>
+            <input type="text" name="sala" id="sala" required/>
+            <input type="submit" value="CADASTRAR"/>
+        </form>
+    </div>
 </body>
 </html>
-

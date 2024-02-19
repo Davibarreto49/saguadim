@@ -17,7 +17,7 @@ CREATE TABLE clientes(
     cli_nome VARCHAR(50) NOT NULL,
     cli_email VARCHAR(100) NOT NULL,
     cli_telefone BIGINT NOT NULL,
-    cli_cfp VARCHAR(20),
+    cli_cpf VARCHAR(20),
     cli_curso VARCHAR(50) NOT NULL,
     cli_sala INT NOT NULL,
     cli_status CHAR(1) NOT NULL,

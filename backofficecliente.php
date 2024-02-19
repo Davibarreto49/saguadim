@@ -1,5 +1,5 @@
 <?php
-include("cabecalho.php");
+include("cabecalhocliente.php");
 ?>
 
 <!DOCTYPE html>
@@ -8,9 +8,10 @@ include("cabecalho.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilao1.css">
-    <title>BACKOFFICE</title>
+    <title>BACKOFFICE CLIENTE</title>
 </head>
-<body>
-    
+<body> 
+   
 </body>
+</html>
 </html>

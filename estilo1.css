@@ -1,6 +1,6 @@
 body {
     font-family: 'Times New Roman', Times, serif;
-    background-color: #474747;
+    background-color: #555555;
     margin: 0;
     padding: 0;
     
@@ -8,7 +8,7 @@ body {
 
 #container {
     width: 300px;
-    margin: 100px auto; 
+    margin: 100px auto; /* Centraliza horizontalmente */
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
@@ -39,13 +39,13 @@ input[type="submit"] {
 }
 
 input[type="submit"] {
-    background-color: #0015d1;
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
 }
 
 input[type="submit"]:hover {
-    background-color: #5b60af;
+    background-color: #45a049;
 }
 
 h5 {
@@ -54,7 +54,7 @@ h5 {
 
 a {
     text-decoration: none;
-    color: #000000;
+    color: #007bff;
 }
 
 a:hover {
